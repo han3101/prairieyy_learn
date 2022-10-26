@@ -105,7 +105,7 @@ class Question(models.Model):
     # Foreign key to lesson
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     # question text
-    question = models.CharField(max_length=30)
+    question_text = models.CharField(max_length=30)
     course = models.ManyToManyField(Course)
     # question grade/mark
 
@@ -129,7 +129,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model):
     question = models.ManyToManyField(Question)
-    choice = models.CharField(max_length=30)
+    choice_text = models.CharField(max_length=30)
     correct = models.BooleanField()
 
 # <HINT> The submission model
