@@ -105,19 +105,20 @@ class Question(models.Model):
     # Foreign key to lesson
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     # question text
-    question_text = models.CharField(max_length=30)
+    question_text = models.TextField(null=False)
     course = models.ManyToManyField(Course)
     # question grade/mark
+    grade = models.FloatField()
 
     # <HINT> A sample model method to calculate if learner get the score of the question
     def is_get_score(self, selected_ids):
        all_answers = self.choice_set.filter(is_correct=True).count()
        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
        return round(selected_correct / all_answers, 2)
-    #    if all_answers == selected_correct:
-    #        return True
-    #    else:
-    #        return False
+       if all_answers == selected_correct:
+           return True
+       else:
+           return False
     
 
 
@@ -129,7 +130,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model):
     question = models.ManyToManyField(Question)
-    choice_text = models.CharField(max_length=30)
+    choice_text = models.TextField(null=False)
     correct = models.BooleanField()
 
 # <HINT> The submission model
