@@ -54,16 +54,10 @@
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
-            
+            {% if user.is_authenticated %}
+
             <div id="exam" class="collapse">
                 <!-- <HINT> If user is authenticated, show course exam with a list of question -->
-                {% if user.is_authenticated %}
-
-            
-
-           
-
-            
 
             <!-- <HINT> Each example will have many questions -->
 
@@ -75,10 +69,10 @@
             <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
             -->
 
-                <form id="questionform" action="point to a submit view" method="post">
+                <form id="questionform" action="{% url 'onlinecourse:submit %}" method="post">
                         {% for question in course.question_set.all %}
                             <div class="card mt-1">
-                                <div class="card-header"><h5>{{ question.question_text}}</h5></div>
+                                <div class="card-header"><h5>{{ question.question_text }}</h5></div>
                                 {% csrf_token %}
                                 <div class="form-group">
                                 {% for choice in question.choices_set.all %}
