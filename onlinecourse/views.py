@@ -116,13 +116,13 @@ def submit(request, course_id):
     enrollment = get_object_or_404(Enrollment, course=course, user=user)
     submission = Submission.objects.create(enrollment=enrollment)
 
-    for key in request.POST:
-       if key.startswith('choice'):
-           value = request.POST[key]
-           choice_id = int(value)
-           choice = get_object_or_404(Choice, pk=choice_id)
-           submission.choices.add(choice)
-    # extract_answers(request, submission)
+    # for key in request.POST:
+    #    if key.startswith('choice'):
+    #        value = request.POST[key]
+    #        choice_id = int(value)
+    #        choice = get_object_or_404(Choice, pk=choice_id)
+    #        submission.choices.add(choice)
+    extract_answers(request, submission)
     # for subs in extract_answers(request):
     #     submission.chocies.add(subs)
     submission.save()
@@ -153,10 +153,15 @@ def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
     choices = submission.choices.all()
+    choice_ids = submission.choices.values_list('id')
+    questions = course.question_set.all()
     score = 0
 
-    for choice in choices:
-        if choice.correct == True:
+    # for choice in choices:
+    #     if choice.correct == True:
+    #         score += 1
+    for question in questions:
+        if question.is_get_score(choice_ids):
             score += 1
     
     grade = int((score/course.question_set.count()) * 100)
