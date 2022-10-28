@@ -102,7 +102,6 @@ class Question(models.Model):
     course = models.ManyToManyField(Course)
     grade = models.FloatField()
 
-    # <HINT> A sample model method to calculate if learner get the score of the question
     def is_get_score(self, selected_ids):
        all_answers = self.choice_set.filter(correct=True).count()
        selected_correct = self.choice_set.filter(correct=True, id__in=selected_ids).count()

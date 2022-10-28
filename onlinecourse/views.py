@@ -95,7 +95,6 @@ def enroll(request, course_id):
 
     is_enrolled = check_if_enrolled(user, course)
     if not is_enrolled and user.is_authenticated:
-        # Create an enrollment
         Enrollment.objects.create(user=user, course=course, mode='honor')
         course.total_enrollment += 1
         course.save()
