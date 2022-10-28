@@ -55,27 +55,15 @@
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
             {% if user.is_authenticated %}
-
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#exam" aria-expanded="false" aria-controls="exam">Start exam</button>
             <div id="exam" class="collapse">
-                <!-- <HINT> If user is authenticated, show course exam with a list of question -->
-
-            <!-- <HINT> Each example will have many questions -->
-
-            <!-- <HINT> Each question will have many choices -->
-
-
-            <!-- <HINT> Create a form to collect the selected choices for all questions -->
-            <!-- <HINT> For each question choice, you may create a checkbox input like
-            <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
-            -->
-
-                <form id="questionform" action="{% url 'onlinecourse:submit %}" method="post">
+                <form id="questionform" action="/onlinecourse/{{course.id}}/submit/" method="post">
                         {% for question in course.question_set.all %}
                             <div class="card mt-1">
                                 <div class="card-header"><h5>{{ question.question_text }}</h5></div>
                                 {% csrf_token %}
                                 <div class="form-group">
-                                {% for choice in question.choices_set.all %}
+                                {% for choice in question.choice_set.all %}
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" name="choice_{{choice.id}}"
@@ -83,12 +71,15 @@
                                                 value="{{choice.id}}">{{ choice.choice_text }}
                                         </label>
                                     </div>
+                                    {% endfor %}
                                 </div>
                             </div>
+                        {% endfor %}
                         <input class="btn btn-success btn-block" type="save" value="Save">
                         <input class="btn btn-success btn-block" type="submit" value="Submit">
                 </form>
             </div>
+            {% endif %}
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
